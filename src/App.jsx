@@ -1,43 +1,51 @@
 
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import './App.css'
+import Todo from './components/Todo/Todo';
 
-const ACTIONS = {
-  INCREMENT: "increment",
-  DECREMENT: "decrement",
+export const ACTIONS = {
+  ADD_TODO: "add-todo",
+  TOGGLE_TODO: "toggle-todo"
 }
-function reducer (state, action) {
+function reducer (todos, action) {
   switch (action.type) {
-    case ACTIONS.INCREMENT:
-      return {count: state.count + 1}
-
-      break;
-  case ACTIONS.DECREMENT: return{count: state.count -1}
-    default:
-      return state
+    case ACTIONS.ADD_TODO:
+      return [...todos, newTodo(action.payload.name)]
+    case ACTIONS.TOGGLE_TODO:
+      return todos.map(todo => {
+        if(todo.id === action.payload.id){
+          return {...todo, complete: !todo.complete}
+        }
+        return todo
+      })
+      default:
       break;
   }
 
+}
+function newTodo(name) {
+  return {
+    id: Date.now(),
+    name: name,
+    complete: false,
+  }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, {count: 0})
-  // const [count, setCount] = useState(0)
+  const [todos, dispatch] = useReducer(reducer, [])
+const [name, setName] = useState("")
 
-  const increment = () => {
-    // setCount(prevCount => prevCount + 1)
-    dispatch({type: ACTIONS.INCREMENT})
-  }
-const decrement = () => {
-  // setCount(prevCount => prevCount - 1)
-  dispatch({type: ACTIONS.DECREMENT})
+function handleSubmit(e){
+  e.preventDefault()
+  dispatch({type: ACTIONS.ADD_TODO, payload: {name: name}})
+  setName("")
 }
-
   return (
     <div>
-      <button onClick={increment}>+</button>
-      <span>{state.count}</span>
-      <button onClick={decrement}>-</button>
+    <form onSubmit={handleSubmit}>
+      <input type="text" value={name} onChange={e => setName(e.target.value)} />
+    </form>
+    {todos.map(todo => <Todo key={todo.id} todo={todo} dispatch={dispatch}/>)}
     </div>
   )
 }
