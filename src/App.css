@@ -4,4 +4,21 @@
   padding: 2rem;
   text-align: center;
 }
-
+form {
+  border: 1px solid gray;
+  background-color: transparent;
+  border-radius: 15px;
+  padding: 20px;
+}
+label{
+  display: block;
+  margin-bottom: 10px;
+}
+input{
+  background-color: antiquewhite;
+  padding: 10px 20px;
+  border-color: gray;
+  border-radius: 10px;
+  caret-color: black;
+  color: black;
+}

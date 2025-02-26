@@ -43,6 +43,8 @@ function handleSubmit(e){
   return (
     <div>
     <form onSubmit={handleSubmit}>
+      <label>
+        What is your next big plan: </label>
       <input type="text" value={name} onChange={e => setName(e.target.value)} />
     </form>
     {todos.map(todo => <Todo key={todo.id} todo={todo} dispatch={dispatch}/>)}
