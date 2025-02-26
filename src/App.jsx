@@ -1,5 +1,5 @@
 
-import { useReducer, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import './App.css'
 import Todo from './components/Todo/Todo';
 
@@ -7,6 +7,8 @@ export const ACTIONS = {
   ADD_TODO: "add-todo",
   TOGGLE_TODO: "toggle-todo"
 }
+const myTodos = window.localStorage.getItem("mytodos")
+
 function reducer (todos, action) {
   switch (action.type) {
     case ACTIONS.ADD_TODO:
@@ -32,8 +34,11 @@ function newTodo(name) {
 }
 
 function App() {
-  const [todos, dispatch] = useReducer(reducer, [])
+  const [todos, dispatch] = useReducer(reducer, JSON.parse(myTodos) || [])
 const [name, setName] = useState("")
+
+useEffect(()=> {window.localStorage.setItem("mytodos", JSON.stringify(todos))
+}, [todos])
 
 function handleSubmit(e){
   e.preventDefault()
@@ -47,7 +52,9 @@ function handleSubmit(e){
         What is your next big plan: </label>
       <input type="text" value={name} onChange={e => setName(e.target.value)} />
     </form>
+    <div className="todoBox">
     {todos.map(todo => <Todo key={todo.id} todo={todo} dispatch={dispatch}/>)}
+    </div>
     </div>
   )
 }

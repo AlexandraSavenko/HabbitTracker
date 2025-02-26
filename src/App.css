@@ -22,3 +22,12 @@ input{
   caret-color: black;
   color: black;
 }
+.todoBox{
+  margin: 20px;
+  border: 1px solid gray;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+
+}
